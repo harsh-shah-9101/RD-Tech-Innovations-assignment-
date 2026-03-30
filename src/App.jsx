@@ -1,16 +1,14 @@
 // src/App.jsx
 import useFetch from "./hooks/useFetch";
-import MetricCard from "./components/MetricCard";
-import UserGrowthChart from "./components/UserGrowthChart";
-import SalesChart from "./components/SalesChart";
-import RecentActivity from "./components/RecentActivity";
+import MetricCard from "../src/components/MatricCard";
+import UserGrowthChart from "../src/components/UserGrowthChart";
+import SalesChart from "../src/components/SalesChart";
+import RecentActivity from "../src/components/RecentActivity";
 
 const App = () => {
   const { data: users } = useFetch("https://jsonplaceholder.typicode.com/users");
   const { data: posts } = useFetch("https://jsonplaceholder.typicode.com/posts?_limit=8");
-  const { data: coins } = useFetch(
-    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=6&page=1"
-  );
+const { data: coins } = useFetch("https://api.coincap.io/v2/assets?limit=6");
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10">
@@ -29,12 +27,12 @@ const App = () => {
           subtitle="Registered accounts"
           icon="👥"
         />
-        <MetricCard
-          title="Top Coin Price"
-          value={coins ? `$${coins[0].current_price.toLocaleString()}` : "—"}
-          subtitle={coins ? coins[0].name : "Loading..."}
-          icon="💰"
-        />
+      <MetricCard
+  title="Top Coin Price"
+  value={coins ? `$${parseFloat(coins.data[0].priceUsd).toLocaleString()}` : "—"}
+  subtitle={coins ? coins.data[0].name : "Loading..."}
+  icon="💰"
+/>
         <MetricCard
           title="Recent Activities"
           value={posts ? posts.length : "—"}
