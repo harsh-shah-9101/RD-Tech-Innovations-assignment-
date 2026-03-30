@@ -9,8 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import useFetch from "../hooks/useFetch";
-import Loader from "./Loader";
+import coinsSnapshot from "../data/coins";
 
 ChartJS.register(
   CategoryScale,
@@ -23,14 +22,7 @@ ChartJS.register(
 );
 
 const SalesChart = () => {
-  const { data, loading, error } = useFetch(
-    "https://api.coincap.io/v2/assets?limit=6"
-  );
-
-  if (loading) return <Loader />;
-  if (error) return <p className="text-red-500 text-sm p-4">Error: {error}</p>;
-
-  const coins = data?.data ?? [];
+  const coins = coinsSnapshot;
   if (coins.length === 0) {
     return <p className="text-gray-400 text-sm p-4">No data available.</p>;
   }
